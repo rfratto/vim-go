@@ -2,7 +2,8 @@ function! go#fillstruct#FillStruct() abort
   let l:cmd = ['fillstruct',
       \ '-file', bufname(''),
       \ '-offset', go#util#OffsetCursor(),
-      \ '-line', line('.')]
+      \ '-line', line('.'),
+      \ '-tags', go#util#BuildTags()]
 
   " Read from stdin if modified.
   if &modified

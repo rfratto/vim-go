@@ -30,7 +30,7 @@ function! s:guru_cmd(args) range abort
   endif
 
   " start constructing the command
-  let cmd = [bin_path]
+  let cmd = [bin_path, '-tags', go#util#BuildTags()]
 
   let filename = fnamemodify(expand("%"), ':p:gs?\\?/?')
   if &modified
@@ -41,13 +41,6 @@ function! s:guru_cmd(args) range abort
   " enable outputting in json format
   if format == "json"
     call add(cmd, "-json")
-  endif
-
-  " check for any tags
-  if exists('g:go_build_tags')
-    let tags = get(g:, 'go_build_tags')
-    call extend(cmd, ["-tags", tags])
-    let result.tags = tags
   endif
 
   " some modes require scope to be defined (such as callers). For these we

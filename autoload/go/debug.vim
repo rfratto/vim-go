@@ -542,7 +542,7 @@ function! go#debug#Start(...) abort
           \ '--accept-multiclient',
     \]
     if get(g:, 'go_build_tags', '') isnot ''
-      let l:cmd += ['--build-flags', '--tags=' . g:go_build_tags]
+      let l:cmd += ['--build-flags', '--tags=' . go#util#BuildTags()]
     endif
     let l:cmd += l:args
 

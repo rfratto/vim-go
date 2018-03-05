@@ -1,20 +1,15 @@
 function! go#keyify#Keyify()
-  let bin_path = go#path#CheckBinPath("keyify")
-  let fname = fnamemodify(expand("%"), ':p:gs?\\?/?')
+  let l:cmd = ['keyify',
+      \ '-tags', go#util#BuildTags(),
+      \ '-json',
+      \ printf('%s:#%s', fnamemodify(expand('%'), ':p:gs?\\?/?'), go#util#OffsetCursor())]
 
-  if empty(bin_path) || !exists('*json_decode')
-    return
-  endif
-
-  " Get result of command as json, that contains `start`, `end` and `replacement`
-  let command = printf("%s -json %s:#%s", go#util#Shellescape(bin_path),
-    \ go#util#Shellescape(fname), go#util#OffsetCursor())
-  let output = go#util#System(command)
-  silent! let result = json_decode(output)
+  let [l:out, l:err] = go#util#Exec(l:cmd)
+  silent! let result = json_decode(l:out)
 
   " We want to output the error message in case the result isn't a JSON
   if type(result) != type({})
-    call go#util#EchoError(s:chomp(output))
+    call go#util#EchoError(s:chomp(l:out))
     return
   endif
 

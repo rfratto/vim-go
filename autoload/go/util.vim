@@ -399,4 +399,8 @@ function! go#util#HasDebug(flag)
   return index(get(g:, 'go_debug', []), a:flag) >= 0
 endfunction
 
+function! go#util#BuildTags()
+  return get(g:, 'go_build_tags', '')
+endfunction
+
 " vim: sw=2 ts=2 et

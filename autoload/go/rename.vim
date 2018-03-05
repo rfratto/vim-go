@@ -47,13 +47,7 @@ function! go#rename#Rename(bang, ...) abort
   let offset = go#util#has_job() ? offset : shellescape(offset)
   let to_identifier = go#util#has_job() ? to_identifier : shellescape(to_identifier)
 
-  let cmd = [bin_path, "-offset", offset, "-to", to_identifier]
-
-  " check for any tags
-  if exists('g:go_build_tags')
-    let tags = get(g:, 'go_build_tags')
-    call extend(cmd, ["-tags", tags])
-  endif
+  let cmd = [bin_path, "-offset", offset, "-to", to_identifier, '-tags', go#util#BuildTags()]
 
   if go#util#has_job()
     call go#util#EchoProgress(printf("renaming to '%s' ...", to_identifier))

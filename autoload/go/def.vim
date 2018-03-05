@@ -33,18 +33,13 @@ function! go#def#Jump(mode) abort
       return
     endif
 
-    let cmd = [bin_path]
+    let cmd = [bin_path, '-tags', go#util#BuildTags()]
     let stdin_content = ""
 
     if &modified
       let content  = join(go#util#GetLines(), "\n")
       let stdin_content = fname . "\n" . strlen(content) . "\n" . content
       call add(cmd, "-modified")
-    endif
-
-    if exists('g:go_build_tags')
-      let tags = get(g:, 'go_build_tags')
-      call extend(cmd, ["-tags", tags])
     endif
 
     let fname = fname.':#'.go#util#OffsetCursor()

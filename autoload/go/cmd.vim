@@ -15,7 +15,7 @@ function! go#cmd#Build(bang, ...) abort
   " that tries to install the dependencies, this has the side effect that it
   " caches the build results, so every other build is faster.
   let args =
-        \ ["build"] +
+        \ ['build', '-tags', go#util#BuildTags()] +
         \ map(copy(a:000), "expand(v:val)") +
         \ ["-i", ".", "errors"]
 
@@ -72,29 +72,6 @@ function! go#cmd#Build(bang, ...) abort
     let &makeprg = default_makeprg
   endif
 endfunction
-
-
-" BuildTags sets or shows the current build tags used for tools
-function! go#cmd#BuildTags(bang, ...) abort
-  if a:0
-    if a:0 == 1 && a:1 == '""'
-      unlet g:go_build_tags
-      call go#util#EchoSuccess("build tags are cleared")
-    else
-      let g:go_build_tags = a:1
-      call go#util#EchoSuccess("build tags are changed to: ". a:1)
-    endif
-
-    return
-  endif
-
-  if !exists('g:go_build_tags')
-    call go#util#EchoSuccess("build tags are not set")
-  else
-    call go#util#EchoSuccess("current build tags: ". g:go_build_tags)
-  endif
-endfunction
-
 
 " Run runs the current file (and their dependencies if any) in a new terminal.
 function! go#cmd#RunTerm(bang, mode, files) abort
@@ -175,7 +152,7 @@ function! go#cmd#Install(bang, ...) abort
     endif
 
     call s:cmd_job({
-          \ 'cmd': ['go', 'install'] + goargs,
+          \ 'cmd': ['go', 'install', '-tags', go#util#BuildTags()] + goargs,
           \ 'bang': a:bang,
           \ 'for': 'GoInstall',
           \})
