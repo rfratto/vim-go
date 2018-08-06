@@ -40,9 +40,25 @@ function! go#list#Window(listtype, ...) abort
   endif
 
   if a:listtype == "locationlist"
-    exe 'lopen ' . height
+    let cmd_prefix = ""
+    let vert = get(g:, "go_vert_locationlist", 0)
+    if vert == 1
+      let cmd_prefix = 'vert '
+      let height = get(g:, "go_vert_locationlist_width", 80)
+    endif
+
+    exe cmd_prefix . 'lopen ' . height
   else
-    exe 'copen ' . height
+    let cmd_prefix = ""
+    let vert = get(g:, "go_vert_quickfix", 0)
+    if vert == 1
+      let cmd_prefix = 'vert '
+      let height = get(g:, "go_vert_quickfix_width", 80)
+    endif
+
+
+
+    exe cmd_prefix . 'copen ' . height
   endif
 endfunction
 
