@@ -197,7 +197,10 @@ function! s:errorformat() abort
   " indicate that they're multiple lines of output, but in that case the lines
   " get concatenated in the quickfix list, which is not what users typically
   " want when writing a newline into their test output.
-  let format .= ",%G" . indent . "%\\t%\\{2}%m"
+
+  " N.B. Commented out so multiline output *does not* match: when it matches
+  " (at least in neovim), it will be not skipped over when running :cnext
+  "let format .= ",%G" . indent . "%\\t%\\{2}%m"
 
   " set the format for panics.
 
@@ -279,12 +282,15 @@ function! s:errorformat() abort
   " cause a quickfix entry since the next entry can add a quickfix entry for
   " 2nd and later lines of a multi-line compiler error.
   let format .= ",%-C%\\tpanic: %.%#"
-  let format .= ",%G%\\t%m"
+  let format .= ",%-G%\\tpanic: %.%#"
 
-  " Match and ignore everything else in multi-line messages.
-  let format .= ",%-C%.%#"
-  " Match and ignore everything else not in a multi-line message:
-  let format .= ",%-G%.%#"
+  " Match and ignore everything else not starting with a tab in a multi-line message.
+  let format .= ",%-C%\\S%m"
+  " Match and ignore everything else not starting with a tab not in a multi-line message:
+  let format .= ",%-G%\\S%m"
+
+  " Match and ignore pure whitespace line not in a multiline message
+  let format .= ",%-G\\s%#"
 
   let s:efm = format
 
