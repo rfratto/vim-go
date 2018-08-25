@@ -11,6 +11,8 @@ IMPROVEMENTS:
   [[GH-1901]](https://github.com/fatih/vim-go/pull/1901)
 * Run gorename asynchronously in Vim8 and Neovim.
   [[GH-1894]](https://github.com/fatih/vim-go/pull/1894)
+* Install keyify from its canonical import path.
+  [[GH-1924]](https://github.com/fatih/vim-go/pull/1924)
 
 BUG FIXES:
 * Fix `:GoRun %` on Windows.
@@ -19,6 +21,8 @@ BUG FIXES:
   [[GH-1905]](https://github.com/fatih/vim-go/pull/1905)
 * Restore support for running tests in the Neovim terminal.
   [[GH-1895]](https://github.com/fatih/vim-go/pull/1895)
+* Fix `:GoInfo` when `g:go_info_mode` is `gocode`
+  [[GH-1915]](https://github.com/fatih/vim-go/pull/1915)
 
 BACKWARDS INCOMPATIBILITIES:
 * Bump minimum required version of Vim to 7.4.2009.
